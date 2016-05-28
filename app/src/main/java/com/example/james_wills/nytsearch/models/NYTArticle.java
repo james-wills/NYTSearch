@@ -1,27 +1,41 @@
 package com.example.james_wills.nytsearch.models;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.example.james_wills.nytsearch.utils.DateFormatUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcel;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by james_wills on 5/21/16.
  */
 public class NYTArticle {
+
+  public static final String BYLINE_KEY = "byline";
+  public static final String FIRST_NAME_KEY = "firstname";
+  public static final String HEADLINE_KEY = "headline";
+  public static final String HEIGHT_KEY = "height";
+  public static final String ID_KEY = "_id";
+  public static final String LAST_NAME_KEY = "lastname";
+  public static final String LEAD_PARAGRAPH_KEY = "lead_paragraph";
+  public static final String MAIN_KEY = "main";
+  public static final String MIDDLE_NAME_KEY = "middlename";
+  public static final String MULTIMEDIA_KEY = "multimedia";
+  public static final String ORGANIZATION_KEY = "organization";
+  public static final String ORIGINAL_KEY = "original";
+  public static final String PERSON_KEY = "person";
+  public static final String PUB_DATE_KEY = "pub_date";
+  public static final String SNIPPET_KEY = "snippet";
+  public static final String TYPE_OF_MATERIAL_KEY = "type_of_material";
+  public static final String URL_KEY = "url";
+  public static final String WEB_URL_KEY = "web_url";
+  public static final String WIDTH_KEY = "width";
+
   private String url;
   private String imageURL;
   private String snippet;
@@ -36,41 +50,37 @@ public class NYTArticle {
 
   private ArrayList<String> authors;
 
-  public static String BYLINE_KEY = "byline";
 
   public NYTArticle(JSONObject doc) throws JSONException {
-    url = doc.getString("web_url");
-    snippet = doc.getString("snippet");
-    leadParagraph = doc.getString("lead_paragraph");
-    headline = doc.getJSONObject("headline").getString("main");
-    id = doc.getString("_id");
-    typeOfMaterial = doc.getString("type_of_material");
+    url = doc.getString(WEB_URL_KEY);
+    snippet = doc.getString(SNIPPET_KEY);
+    leadParagraph = doc.getString(LEAD_PARAGRAPH_KEY);
+    headline = doc.getJSONObject(HEADLINE_KEY).getString(MAIN_KEY);
+    id = doc.getString(ID_KEY);
+    typeOfMaterial = doc.getString(TYPE_OF_MATERIAL_KEY);
 
-    JSONObject imageData = getLargestImageData(doc.getJSONArray("multimedia"));
+    JSONObject imageData = getLargestImageData(doc.getJSONArray(MULTIMEDIA_KEY));
     if (imageData != null) {
-      imageURL = imageData.getString("url");
-      imageHeight = imageData.getInt("height");
-      imageWidth = imageData.getInt("width");
+      imageURL = imageData.getString(URL_KEY);
+      imageHeight = imageData.getInt(HEIGHT_KEY);
+      imageWidth = imageData.getInt(WIDTH_KEY);
     } else {
       imageURL = null;
       imageHeight = 0;
       imageWidth = 0;
     }
 
-    Object byline = doc.get("byline");
-    if (byline == null) {
-      authors = new ArrayList<>();
-    } else if (byline instanceof  JSONObject) {
+    Object byline = doc.get(BYLINE_KEY);
+    if (byline instanceof  JSONObject) {
       authors = parseAuthors((JSONObject) byline);
-    } else if (byline instanceof  JSONArray) {
-      Log.i("JSONARRAY", ((JSONArray) byline).toString(2));
+    } else {
+      authors = new ArrayList<>();
     }
 
     try {
       pubDate = DateFormatUtils.convert(
-          doc.getString("pub_date"), DateFormatUtils.RESPONSE_FORMAT, DateFormatUtils.USER_FORMAT) ;
+          doc.getString(PUB_DATE_KEY), DateFormatUtils.RESPONSE_FORMAT, DateFormatUtils.USER_FORMAT);
     } catch (ParseException e) {
-      Log.d("JAMES", "Error parsing date string: " + doc.getString("pub_date"));
       e.printStackTrace();
       pubDate = "";
     }
@@ -138,16 +148,16 @@ public class NYTArticle {
   }
 
   private static ArrayList<String> parseAuthors(JSONObject o) throws JSONException {
-    JSONArray people = o.getJSONArray("person");
+    JSONArray people = o.getJSONArray(PERSON_KEY);
     if (people.length() != 0) {
       return authorsFromJSONArray(people);
     }
 
     ArrayList<String> result = new ArrayList<>();
-    if (o.has("organization")) {
-      result.add(o.getString("organization"));
-    } else if (o.has("original")) {
-      result.add(o.getString("original"));
+    if (o.has(ORGANIZATION_KEY)) {
+      result.add(o.getString(ORGANIZATION_KEY));
+    } else if (o.has(ORIGINAL_KEY)) {
+      result.add(o.getString(ORIGINAL_KEY));
     }
 
     return result;
@@ -155,7 +165,7 @@ public class NYTArticle {
 
   private static ArrayList<String> authorsFromJSONArray(JSONArray arr) throws JSONException {
     ArrayList<String> authors = new ArrayList<>();
-    String[] nameKeys = { "firstname", "middlename", "lastname" };
+    String[] nameKeys = { FIRST_NAME_KEY, MIDDLE_NAME_KEY, LAST_NAME_KEY };
     for (int i = 0; i < arr.length(); i++) {
       try {
         JSONObject o = arr.getJSONObject(i);
@@ -185,8 +195,8 @@ public class NYTArticle {
 
     for (int i = 0; i < images.length(); i++) {
       JSONObject image = images.getJSONObject(i);
-      if (image.has("width") && image.has("height") && image.has("url")) {
-        int width = image.getInt("width");
+      if (image.has(WIDTH_KEY) && image.has(HEIGHT_KEY) && image.has(URL_KEY)) {
+        int width = image.getInt(WIDTH_KEY);
         if (width > max) {
           max = width;
           maxObject = image;

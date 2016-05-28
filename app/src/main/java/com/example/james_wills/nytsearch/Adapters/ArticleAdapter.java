@@ -7,13 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.james_wills.nytsearch.R;
 import com.example.james_wills.nytsearch.models.NYTArticle;
 import com.example.james_wills.nytsearch.utils.NYTSearchBuilder;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 

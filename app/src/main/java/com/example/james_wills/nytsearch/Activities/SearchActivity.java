@@ -1,5 +1,6 @@
 package com.example.james_wills.nytsearch.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -66,7 +67,9 @@ public class SearchActivity extends AppCompatActivity implements FiltersDialogFr
     adapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
       @Override
       public void onItemClick(View itemView, int position) {
-        showSnackbarMessage(adapter.getItem(position).getHeadline());
+        Intent i = new Intent(SearchActivity.this, WebActivity.class);
+        i.putExtra("url", adapter.getItem(position).getUrl());
+        startActivity(i);
       }
     });
   }
@@ -100,9 +103,8 @@ public class SearchActivity extends AppCompatActivity implements FiltersDialogFr
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
 
-    if (id == R.id.action_filters) {
+    if (id == R.id.action_filters)
       showFiltersDialog();
-    }
 
     return super.onOptionsItemSelected(item);
   }
@@ -120,6 +122,10 @@ public class SearchActivity extends AppCompatActivity implements FiltersDialogFr
   }
 
   private void loadArticles(final int page) {
+    if (queryParams.getQuery().length() == 0) {
+      return;
+    }
+
     NYTSearchBuilder.executeAndGetResults(this, queryParams, page, new NYTSearchBuilder.NYTArticleListener() {
       @Override
       public void onLoadArticlesSuccessful(NYTSearchBuilder.SearchResult result) {
@@ -155,6 +161,8 @@ public class SearchActivity extends AppCompatActivity implements FiltersDialogFr
           case NYTSearchBuilder.CODE_DATE_PARSE_ERROR:
             showSnackbarMessage(getString(R.string.date_parse_error));
             break;
+          default:
+            showSnackbarMessage(getString(R.string.unknown_error));
         }
       }
     });
@@ -163,10 +171,6 @@ public class SearchActivity extends AppCompatActivity implements FiltersDialogFr
   private void queryUpdated() {
     adapter.clearArticles();
     loadArticles(0);
-  }
-
-  private void customLoadMoreDataFromApi(int page) {
-    loadArticles(page);
   }
 
   private void showSnackbarMessage(String message) {

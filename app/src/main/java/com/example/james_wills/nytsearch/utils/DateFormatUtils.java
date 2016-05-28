@@ -1,6 +1,5 @@
 package com.example.james_wills.nytsearch.utils;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

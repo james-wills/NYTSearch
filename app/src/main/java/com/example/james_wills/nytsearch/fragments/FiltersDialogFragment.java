@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.james_wills.nytsearch.activities.SearchActivity;
 import com.example.james_wills.nytsearch.R;
+import com.example.james_wills.nytsearch.models.NYTArticle;
 import com.example.james_wills.nytsearch.models.NYTSearchQueryParams;
 import com.example.james_wills.nytsearch.utils.DateFormatUtils;
 
@@ -25,7 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 
 /**
  * Created by james_wills on 5/26/16.
@@ -34,6 +34,8 @@ public class FiltersDialogFragment extends DialogFragment {
   public interface FilterDialogListener {
     void onFinishDialog(NYTSearchQueryParams params);
   }
+
+  public static final String QUERY_KEY = "query";
 
   @BindView(R.id.tvBeginDateLink) TextView tvBeginDateLink;
   @BindView(R.id.tvEndDateLink) TextView tvEndDateLink;
@@ -55,7 +57,7 @@ public class FiltersDialogFragment extends DialogFragment {
   public static FiltersDialogFragment newInstance(NYTSearchQueryParams queryParams) {
     FiltersDialogFragment frag = new FiltersDialogFragment();
     Bundle args = new Bundle();
-    args.putParcelable("query", queryParams);
+    args.putParcelable(QUERY_KEY, queryParams);
     frag.setArguments(args);
     return frag;
   }
@@ -71,9 +73,9 @@ public class FiltersDialogFragment extends DialogFragment {
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    params = getArguments().getParcelable("query");
+    params = getArguments().getParcelable(QUERY_KEY);
 
-    tvSortByLink.setText(params.getSortOrder());
+    tvSortByLink.setText(params.getSortOrderValue());
 
     if (params.getBeginDate() != null) {
       tvBeginDateLink.setText(params.getBeginDate());
@@ -122,7 +124,7 @@ public class FiltersDialogFragment extends DialogFragment {
 
   @OnClick(R.id.tvSortByLink)
   public void onSortByClicked() {
-    final String[] items = { getString(R.string.newest), getString(R.string.oldest) };
+    final String[] items = NYTSearchQueryParams.SortOption.getValues();
     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
     builder.setTitle(R.string.sort_by);
     builder.setItems(items, new DialogInterface.OnClickListener() {

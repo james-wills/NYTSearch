@@ -40,34 +40,6 @@ public class NYTSearchBuilder {
   private static final String NYT_BASE_URL = "http://www.nytimes.com/";
 
   // Query Parameters
-  public static final String QUERY_PARAM = "q";
-  public static final String FILTERED_QUERY_PARAM = "fq";
-  public static final String BEGIN_DATE_PARAM = "begin_date";
-  public static final String END_DATE_PARAM = "end_date";
-  public static final String HIGHLIGHTING_PARAM = "hl";
-  public static final String PAGE_PARAM = "page";
-
-  public static final String SORT_PARAM = "sort";
-  public static final String SORT_OPTION_NEWEST = "newest";
-  public static final String SORT_OPTION_OLDEST = "oldest";
-
-  public static final String FIELDS_PARAM = "fl";
-  public static final String FIELDS_OPTION_WEB_URL = "web_url";
-  public static final String FIELDS_OPTION_SNIPPET = "snippet";
-  public static final String FIELDS_OPTION_LEAD_PARAGRAPH = "lead_paragraph";
-  public static final String FIELDS_OPTION_ABSTRACT = "abstract";
-  public static final String FIELDS_OPTION_PRINT_PAGE = "print_page";
-  public static final String FIELDS_OPTION_BLOG = "blog";
-  public static final String FIELDS_OPTION_MULTIMEDIA = "multimedia";
-  public static final String FIELDS_OPTION_HEADLINE = "headline";
-  public static final String FIELDS_OPTION_KEYWORDS = "keywords";
-  public static final String FIELDS_OPTION_PUB_DATE = "pub_date";
-  public static final String FIELDS_OPTION_DOCUMENT_TYPE = "document_type";
-  public static final String FIELDS_OPTION_NEWS_DESK = "news_desk";
-  public static final String FIELDS_OPTION_BYLINE = "byline";
-  public static final String FIELDS_OPTION_TYPE_OF_MATERIAL = "type_of_material";
-  public static final String FIELDS_OPTION_ID = "_id";
-  public static final String FIELDS_OPTION_WORD_COUNT = "word_count";
 
   public static final int CODE_PARSE_ERROR = 0;
   public static final int CODE_NETWORK_ERROR = 1;

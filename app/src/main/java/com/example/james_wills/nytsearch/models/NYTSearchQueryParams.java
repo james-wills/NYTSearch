@@ -1,8 +1,6 @@
 package com.example.james_wills.nytsearch.models;
 
 import android.os.Parcelable;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.example.james_wills.nytsearch.utils.DateFormatUtils;
 import com.example.james_wills.nytsearch.utils.NYTSearchBuilder;
@@ -31,9 +29,23 @@ public class NYTSearchQueryParams implements Parcelable {
     NewsDeskCategory(String name) {
       this.name = name;
     }
+  }
 
-    public String displayName() {
-      return name;
+  public enum SortOption {
+    NEWEST,
+    OLDEST;
+
+    public String getString() {
+      return this.toString().toLowerCase();
+    }
+
+    public static SortOption getSortOption(String s) {
+      return SortOption.valueOf(s.toUpperCase());
+    }
+
+    public static String[] getValues() {
+      String[] result = { NEWEST.toString().toLowerCase(), OLDEST.toString().toLowerCase() };
+      return result;
     }
   }
 
@@ -41,7 +53,7 @@ public class NYTSearchQueryParams implements Parcelable {
   String query;
   String beginDate;
   String endDate;
-  String sortOrder;
+  SortOption sortOrder;
   Set<NewsDeskCategory> newsDeskCategories;
 
   public NYTSearchQueryParams() {
@@ -49,21 +61,8 @@ public class NYTSearchQueryParams implements Parcelable {
     beginDate = null;
     endDate = null;
     shouldHighlight = true;
-    sortOrder = NYTSearchBuilder.SORT_OPTION_NEWEST;
+    sortOrder = SortOption.NEWEST;
     newsDeskCategories = new HashSet<>();
-  }
-
-  public NYTSearchQueryParams(String query) {
-    this();
-    this.query = query;
-  }
-
-  public boolean shouldHighlight() {
-    return shouldHighlight;
-  }
-
-  public void setShouldHighlight(boolean shouldHighlight) {
-    this.shouldHighlight = shouldHighlight;
   }
 
   public String getQuery() {
@@ -90,12 +89,20 @@ public class NYTSearchQueryParams implements Parcelable {
     this.endDate = endDate;
   }
 
-  public String getSortOrder() {
+  public SortOption getSortOrder() {
     return sortOrder;
   }
 
-  public void setSortOrder(String sortOrder) {
+  public String getSortOrderValue() {
+    return sortOrder.getString();
+  }
+
+  public void setSortOrder(SortOption sortOrder) {
     this.sortOrder = sortOrder;
+  }
+
+  public void setSortOrder(String sortOrderString) {
+    this.sortOrder = SortOption.getSortOption(sortOrderString);
   }
 
   public void updateNewsDeskParam(NewsDeskCategory category, boolean enableFilter) {
@@ -135,7 +142,7 @@ public class NYTSearchQueryParams implements Parcelable {
 
     if (endDate != null) {
       String formattedDate = DateFormatUtils.convert(endDate, DateFormatUtils.USER_FORMAT, DateFormatUtils.PARAM_FORMAT);
-      params.put("begin_date", formattedDate);
+      params.put("end_date", formattedDate);
     }
 
     params.put("hl", shouldHighlight);
@@ -144,9 +151,6 @@ public class NYTSearchQueryParams implements Parcelable {
     if (newsDeskCategories.size() > 0) {
       params.put("fq", getNewsDeskParam());
     }
-
-
-    Log.d("JB", params.toString());
 
     return params;
   }
@@ -162,7 +166,7 @@ public class NYTSearchQueryParams implements Parcelable {
     dest.writeString(this.query);
     dest.writeString(this.beginDate);
     dest.writeString(this.endDate);
-    dest.writeString(this.sortOrder);
+    dest.writeString(this.sortOrder.getString());
     List<Integer> categoryIndices = new ArrayList<>();
     for (NewsDeskCategory category : this.newsDeskCategories) {
       categoryIndices.add(category.ordinal());
@@ -175,7 +179,7 @@ public class NYTSearchQueryParams implements Parcelable {
     this.query = in.readString();
     this.beginDate = in.readString();
     this.endDate = in.readString();
-    this.sortOrder = in.readString();
+    this.sortOrder = SortOption.getSortOption(in.readString());
     List<Integer> categoryIndices = new ArrayList<>();
     in.readList(categoryIndices, null);
 

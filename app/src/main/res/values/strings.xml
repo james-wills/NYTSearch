@@ -13,6 +13,7 @@
   <string name="no_articles_found">No articles found for this query.</string>
   <string name="no_more_results">You\'ve reached the end of the results.</string>
   <string name="date_parse_error">Error parsing date fields.</string>
+  <string name="unknown_error">An unknown Error occured.</string>
 
 
   <string name="cancel">Cancel</string>
