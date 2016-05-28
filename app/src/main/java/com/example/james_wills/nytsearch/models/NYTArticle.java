@@ -3,6 +3,8 @@ package com.example.james_wills.nytsearch.models;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.james_wills.nytsearch.utils.DateFormatUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +27,6 @@ public class NYTArticle {
   private String snippet;
   private String leadParagraph;
   private String headline;
-  private ArrayList<Keyword> keywords;
   private String pubDate;
   private String id;
   private String typeOfMaterial;
@@ -35,9 +36,6 @@ public class NYTArticle {
 
   private ArrayList<String> authors;
 
-  private SimpleDateFormat responseDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-  private SimpleDateFormat appDF = new SimpleDateFormat("MM/dd/yy");
-
   public static String BYLINE_KEY = "byline";
 
   public NYTArticle(JSONObject doc) throws JSONException {
@@ -45,14 +43,11 @@ public class NYTArticle {
     snippet = doc.getString("snippet");
     leadParagraph = doc.getString("lead_paragraph");
     headline = doc.getJSONObject("headline").getString("main");
-    keywords = Keyword.fromJSONArray(doc.getJSONArray("keywords"));
     id = doc.getString("_id");
     typeOfMaterial = doc.getString("type_of_material");
 
-    JSONArray media = doc.getJSONArray("multimedia");
-    Log.i("JB", media.length() + "");
-    if (media.length() > 0 ) {
-      JSONObject imageData = getLargestImageData(media);
+    JSONObject imageData = getLargestImageData(doc.getJSONArray("multimedia"));
+    if (imageData != null) {
       imageURL = imageData.getString("url");
       imageHeight = imageData.getInt("height");
       imageWidth = imageData.getInt("width");
@@ -72,7 +67,8 @@ public class NYTArticle {
     }
 
     try {
-      pubDate = appDF.format(responseDF.parse(doc.getString("pub_date")));
+      pubDate = DateFormatUtils.convert(
+          doc.getString("pub_date"), DateFormatUtils.RESPONSE_FORMAT, DateFormatUtils.USER_FORMAT) ;
     } catch (ParseException e) {
       Log.d("JAMES", "Error parsing date string: " + doc.getString("pub_date"));
       e.printStackTrace();
@@ -122,23 +118,6 @@ public class NYTArticle {
 
   public int getImageHeight() {
     return imageHeight;
-  }
-
-  public int getProportionalImageHeight(int widthPx) {
-    if (imageHeight == 0 || imageWidth == 0) {
-      return 0;
-    }
-
-    return (int) ((double) imageHeight / (double) imageWidth) * widthPx;
-  }
-
-  public ArrayList<String> getKeywords() {
-    ArrayList<String> result = new ArrayList<>();
-    for (Keyword k : keywords) {
-      result.add(k.value);
-    }
-
-    return result;
   }
 
   public static ArrayList<NYTArticle> fromJSONArray(JSONArray arr) throws JSONException {
@@ -201,40 +180,20 @@ public class NYTArticle {
   }
 
   private static JSONObject getLargestImageData(JSONArray images) throws JSONException {
-    int maxWidth = 0;
+    int max = 0;
     JSONObject maxObject = null;
 
     for (int i = 0; i < images.length(); i++) {
       JSONObject image = images.getJSONObject(i);
-      int width = image.getInt("width");
-      Log.i("JB", "width " +width + " maxwidth " + maxWidth);
-      if (width > maxWidth) {
-        maxWidth = width;
-        maxObject = image;
+      if (image.has("width") && image.has("height") && image.has("url")) {
+        int width = image.getInt("width");
+        if (width > max) {
+          max = width;
+          maxObject = image;
+        }
       }
     }
 
     return maxObject;
-  }
-}
-
-class Keyword {
-  public int rank;
-  public String name;
-  public String value;
-
-  public Keyword(JSONObject o) throws JSONException {
-    rank = Integer.parseInt(o.getString("rank"));
-    name = o.getString("name");
-    value = o.getString("value");
-  }
-
-  public static ArrayList<Keyword> fromJSONArray(JSONArray arr) throws JSONException {
-    ArrayList<Keyword> keywords = new ArrayList<>();
-    for (int i = 0; i < arr.length(); i++) {
-      keywords.add(new Keyword(arr.getJSONObject(i)));
-    }
-
-    return keywords;
   }
 }

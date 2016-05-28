@@ -75,8 +75,6 @@ public class NYTSearchBuilder {
   public static final int PAGE_LENGTH = 10;
   public static final int MAX_PAGES = 100; // limited by the api
 
-  private static final SimpleDateFormat paramDF = new SimpleDateFormat("yyyyMMdd");
-
   public static void executeAndGetResults(final Context c,
                                           NYTSearchQueryParams params,
                                           final int page,
