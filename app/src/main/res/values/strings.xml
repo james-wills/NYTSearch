@@ -1,0 +1,33 @@
+<resources>
+  <string name="app_name">NYTSearch</string>
+  <string name="action_settings">Settings</string>
+  <string name="search_hint">Enter search query</string>
+  <string name="search">Search</string>
+
+  <string name="found_x_results">Found %d results.</string>
+
+  <!-- Error Messages -->
+  <string name="parse_error">Error parsing response.</string>
+  <string name="network_error">There was an issue reaching the network.</string>
+  <string name="general_request_error">There was an issue making your request.</string>
+  <string name="no_articles_found">No articles found for this query.</string>
+  <string name="no_more_results">You\'ve reached the end of the results.</string>
+
+
+  <string name="cancel">Cancel</string>
+  <string name="ok">Ok</string>
+  <string name="begin_date">Begin Date</string>
+  <string name="date_range_label">Find articles published</string>
+  <string name="from">From</string>
+  <string name="anytime">anytime</string>
+  <string name="to">To</string>
+  <string name="sort_by">Sort by</string>
+  <string name="first">first</string>
+  <string name="newest">newest</string>
+  <string name="oldest">oldest</string>
+  <string name="find_articles_from">Find articles published</string>
+  <string name="news_desk_categories_label">News desk categories</string>
+  <string name="arts_checkbox_label">Arts</string>
+  <string name="fashion_checkbox_label"><![CDATA[Fashion & Style]]></string>
+  <string name="sports_checkbox_label">Sports</string>
+</resources>
