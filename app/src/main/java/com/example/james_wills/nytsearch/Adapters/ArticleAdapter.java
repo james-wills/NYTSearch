@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.james_wills.nytsearch.R;
 import com.example.james_wills.nytsearch.models.NYTArticle;
 import com.example.james_wills.nytsearch.utils.NYTSearchBuilder;
@@ -21,7 +23,7 @@ import java.util.List;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
 
   private List<NYTArticle> articles;
-
+  private static OnItemClickListener listener;
   public ArticleAdapter(List<NYTArticle> articles) {
     this.articles = articles;
   }
@@ -59,10 +61,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     }
 
     viewHolder.ivImage.setLayoutParams(params);
-    Picasso.with(c)
+    Glide.with(c)
         .load(NYTSearchBuilder.getFullImageURL(article.getImageURL()))
-        .tag(c)
-        .resize(article.getImageWidth(), article.getImageHeight())
+        .override(article.getImageWidth(), article.getImageHeight())
         .placeholder(R.drawable.placeholder)
         .into(viewHolder.ivImage);
   }
@@ -73,16 +74,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     return articles.size();
   }
 
-  public static class ViewHolder extends RecyclerView.ViewHolder {
-    public TextView tvHeadline;
-    public ImageView ivImage;
-
-    public ViewHolder(View itemView) {
-      super(itemView);
-
-      tvHeadline = (TextView) itemView.findViewById(R.id.tvItemHeadline);
-      ivImage = (ImageView) itemView.findViewById(R.id.ivArticleImage);
-    }
+  public NYTArticle getItem(int position) {
+    return articles.get(position);
   }
 
   public void addItems(List<NYTArticle> items) {
@@ -101,5 +94,34 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
   public void clearArticles() {
     articles.clear();
     notifyDataSetChanged();
+  }
+
+  public void setOnItemClickListener(OnItemClickListener listener) {
+    this.listener = listener;
+  }
+
+  public static class ViewHolder extends RecyclerView.ViewHolder {
+    public TextView tvHeadline;
+    public ImageView ivImage;
+
+    public ViewHolder(final View itemView) {
+      super(itemView);
+
+      tvHeadline = (TextView) itemView.findViewById(R.id.tvItemHeadline);
+      ivImage = (ImageView) itemView.findViewById(R.id.ivArticleImage);
+
+      itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          // Triggers click upwards to the adapter on click
+          if (listener != null)
+            listener.onItemClick(itemView, getLayoutPosition());
+        }
+      });
+    }
+  }
+
+  public interface OnItemClickListener {
+    void onItemClick(View itemView, int position);
   }
 }

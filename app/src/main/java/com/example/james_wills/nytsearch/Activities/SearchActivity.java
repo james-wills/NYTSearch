@@ -11,6 +11,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.james_wills.nytsearch.adapters.ArticleAdapter;
 import com.example.james_wills.nytsearch.fragments.FiltersDialogFragment;
@@ -59,6 +60,13 @@ public class SearchActivity extends AppCompatActivity implements FiltersDialogFr
         if (!lastPage) {
           loadArticles(page);
         }
+      }
+    });
+
+    adapter.setOnItemClickListener(new ArticleAdapter.OnItemClickListener() {
+      @Override
+      public void onItemClick(View itemView, int position) {
+        showSnackbarMessage(adapter.getItem(position).getHeadline());
       }
     });
   }
