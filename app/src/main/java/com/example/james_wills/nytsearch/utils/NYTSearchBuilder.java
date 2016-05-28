@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -71,6 +72,7 @@ public class NYTSearchBuilder {
   public static final int CODE_PARSE_ERROR = 0;
   public static final int CODE_NETWORK_ERROR = 1;
   public static final int CODE_GENERAL_ERROR = 2;
+  public static final int CODE_DATE_PARSE_ERROR = 3;
 
   public static final int PAGE_LENGTH = 10;
   public static final int MAX_PAGES = 100; // limited by the api
@@ -80,8 +82,17 @@ public class NYTSearchBuilder {
                                           final int page,
                                           final NYTArticleListener resultListener) {
     AsyncHttpClient client = new AsyncHttpClient();
-    RequestParams requestParams =
-        params.getRequestParams(page, c.getResources().getString(R.string.nyt_search_key));
+    RequestParams requestParams;
+    try {
+      requestParams =
+          params.getRequestParams(page, c.getResources().getString(R.string.nyt_search_key));
+    } catch (ParseException e) {
+      resultListener.onLoadArticlesFailed(CODE_DATE_PARSE_ERROR);
+      e.printStackTrace();
+      return;
+    }
+
+    requestParams.toString();
 
     client.get(NYT_SEARCH_URL, requestParams, new JsonHttpResponseHandler() {
       @Override

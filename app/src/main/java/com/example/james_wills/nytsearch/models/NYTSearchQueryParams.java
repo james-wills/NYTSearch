@@ -4,11 +4,13 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.james_wills.nytsearch.utils.DateFormatUtils;
 import com.example.james_wills.nytsearch.utils.NYTSearchBuilder;
 import com.loopj.android.http.RequestParams;
 
 import org.parceler.Parcel;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -117,7 +119,7 @@ public class NYTSearchQueryParams implements Parcelable {
     return String.format("news_desk:(%s)", categories);
   }
 
-  public RequestParams getRequestParams(int page, String apiKey) {
+  public RequestParams getRequestParams(int page, String apiKey) throws ParseException {
     RequestParams params = new RequestParams();
     params.put("api-key", apiKey);
     params.put("page", page);
@@ -127,11 +129,13 @@ public class NYTSearchQueryParams implements Parcelable {
     }
 
     if (beginDate != null) {
-      params.put("begin_date", beginDate);
+      String formattedDate = DateFormatUtils.convert(beginDate, DateFormatUtils.USER_FORMAT, DateFormatUtils.PARAM_FORMAT);
+      params.put("begin_date", formattedDate);
     }
 
     if (endDate != null) {
-      params.put("end_date", endDate);
+      String formattedDate = DateFormatUtils.convert(endDate, DateFormatUtils.USER_FORMAT, DateFormatUtils.PARAM_FORMAT);
+      params.put("begin_date", formattedDate);
     }
 
     params.put("hl", shouldHighlight);

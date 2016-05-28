@@ -25,6 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * Created by james_wills on 5/26/16.
@@ -88,8 +89,8 @@ public class FiltersDialogFragment extends DialogFragment {
     cbSports.setChecked(
         params.hasNewsDeskParam(NYTSearchQueryParams.NewsDeskCategory.SPORTS));
 
-    beginDatePicker = createDatePicker(tvBeginDateLink, params.getBeginDate());
-    endDatePicker = createDatePicker(tvEndDateLink, params.getEndDate());
+    beginDatePicker = createDatePicker(true);
+    endDatePicker = createDatePicker(false);
   }
 
   @OnCheckedChanged(R.id.cbArts)
@@ -144,7 +145,9 @@ public class FiltersDialogFragment extends DialogFragment {
     endDatePicker.show();
   }
 
-  private DatePickerDialog createDatePicker(final TextView outputView, String startDate) {
+  private DatePickerDialog createDatePicker(final boolean forBeginDate) {
+    String startDate = forBeginDate ? params.getBeginDate() : params.getEndDate();
+    final TextView outputView = forBeginDate ? tvBeginDateLink : tvEndDateLink;
 
     Calendar calendar;
     if (startDate != null) {
@@ -162,7 +165,13 @@ public class FiltersDialogFragment extends DialogFragment {
       public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar newDate = Calendar.getInstance();
         newDate.set(year, monthOfYear, dayOfMonth);
-        outputView.setText(DateFormatUtils.USER_FORMAT.format(newDate.getTime()));
+        String dateString = DateFormatUtils.USER_FORMAT.format(newDate.getTime());
+        if (forBeginDate) {
+          params.setBeginDate(dateString);
+        } else {
+          params.setEndDate(dateString);
+        }
+        outputView.setText(dateString);
       }
     }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
   }

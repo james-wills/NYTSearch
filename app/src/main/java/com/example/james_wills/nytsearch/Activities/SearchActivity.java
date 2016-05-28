@@ -144,6 +144,9 @@ public class SearchActivity extends AppCompatActivity implements FiltersDialogFr
           case NYTSearchBuilder.CODE_GENERAL_ERROR:
             showSnackbarMessage(getString(R.string.general_request_error));
             break;
+          case NYTSearchBuilder.CODE_DATE_PARSE_ERROR:
+            showSnackbarMessage(getString(R.string.date_parse_error));
+            break;
         }
       }
     });
