@@ -1,25 +1,22 @@
-package com.example.james_wills.nytsearch;
+package com.example.james_wills.nytsearch.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.james_wills.nytsearch.activities.SearchActivity;
+import com.example.james_wills.nytsearch.R;
 import com.example.james_wills.nytsearch.models.NYTSearchQueryParams;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 
 /**
  * Created by james_wills on 5/26/16.

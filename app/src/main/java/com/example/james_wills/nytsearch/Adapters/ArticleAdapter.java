@@ -1,15 +1,14 @@
-package com.example.james_wills.nytsearch;
+package com.example.james_wills.nytsearch.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.james_wills.nytsearch.R;
 import com.example.james_wills.nytsearch.models.NYTArticle;
 import com.example.james_wills.nytsearch.utils.NYTSearchBuilder;
 import com.squareup.picasso.Picasso;

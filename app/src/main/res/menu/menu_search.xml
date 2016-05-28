@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.example.james_wills.nytsearch.SearchActivity">
+      tools:context=".activities.SearchActivity">
   <item android:id="@+id/action_search"
         android:orderInCategory="5"
         android:title="Search"

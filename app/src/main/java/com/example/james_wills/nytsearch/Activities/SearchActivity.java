@@ -1,19 +1,20 @@
-package com.example.james_wills.nytsearch;
+package com.example.james_wills.nytsearch.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.james_wills.nytsearch.adapters.ArticleAdapter;
+import com.example.james_wills.nytsearch.fragments.FiltersDialogFragment;
+import com.example.james_wills.nytsearch.R;
 import com.example.james_wills.nytsearch.models.NYTArticle;
 import com.example.james_wills.nytsearch.models.NYTSearchQueryParams;
 import com.example.james_wills.nytsearch.utils.EndlessRecyclerViewScrollListener;
