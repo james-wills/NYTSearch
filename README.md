@@ -2,9 +2,7 @@
 
 **New York Times Search** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **20** hours spent in total
-
-NOTE: this app is incomplete, I will finish it by saturday at 10pm.
+Time spent: **24** hours spent in total
 
 ## User Stories
 
@@ -18,9 +16,9 @@ The following **required** functionality is completed:
   * [x] News desk values (Arts, Fashion & Style, Sports)
   * [x] Sort order (oldest or newest)
 * [x] Subsequent searches have any filters applied to the search results
-* [ ] User can tap on any image in results to see the full text of article **full-screen**
+* [x] User can tap on any image in results to see the full text of article **full-screen**
 * [x] User can **scroll down to see more articles**. The maximum number of articles is limited by the API search.
-* [ ] User can **share an article link** to their friends or email it to themselves
+* [x] User can **share an article link** to their friends or email it to themselves
 
 The following **optional** features are implemented:
 
@@ -31,26 +29,37 @@ The following **optional** features are implemented:
 * [ ] For different news articles that only have text or only have images, use [Heterogenous Layouts](http://guides.codepath.com/android/Heterogenous-Layouts-inside-RecyclerView) with RecyclerView
 * [x] Apply the popular [Butterknife annotation library](http://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife) to reduce view boilerplate.
 * [x] Use Parcelable instead of Serializable using the popular [Parceler library](http://guides.codepath.com/android/Using-Parceler).
-* [ ] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
+* [x] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
 * [ ] Leverage the popular [GSON library](http://guides.codepath.com/android/Using-Android-Async-Http-Client#decoding-with-gson-library) to streamline the parsing of JSON data.
 * [ ] Leverage the popular [Retrofit networking library](http://guides.codepath.com/android/Consuming-APIs-with-Retrofit) to access the New York Times API.
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [x] Used IcePick library to persist query on rotation, app auto reloads query on start.
 
-## Video Walkthrough - will be added with final version
+## Video Walkthrough
 
-Here's a walkthrough of implemented user stories:
+Walkthrough showing search -> view -> share link flow:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/tGPQ21E.gif?1' title='Video Walkthrough' width='200' alt='Video Walkthrough' />
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+Walkthrough showing filter (too large to embed w/ imgur)
+https://media.giphy.com/media/3o7qDZgnWSmQLtvGCI/giphy.gif
+
+Walkthrough showing screen rotation (too large to embed w/ imgur)
+http://i.giphy.com/26h0pSYuJCpzeAG76.gif
+
+
+GIF created with [CaptureGif](http://www.pixelegg.me/capture-gif).
 
 ## Notes
 
 Challenges:
 Parcelable doesn't work with Sets, so I had to manually convert the set to a list for write and back to a set during read.
+
+Things that still need to be fixed:
+Filters screen doesn't scroll properly, I don't know why yet.
+Webview renders extremely slowly
 
 ## Open-source libraries used
 
