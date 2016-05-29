@@ -27,18 +27,21 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import icepick.Icepick;
+import icepick.State;
 
 public class SearchActivity extends AppCompatActivity implements FiltersDialogFragment.FilterDialogListener {
   @BindView(R.id.rvResults) RecyclerView rvResults;
   @BindView(R.id.searchToolbar) Toolbar toolbar;
 
   ArticleAdapter adapter;
-  NYTSearchQueryParams queryParams = new NYTSearchQueryParams();
+  @State NYTSearchQueryParams queryParams;
   boolean lastPage = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Icepick.restoreInstanceState(this, savedInstanceState);
 
     setContentView(R.layout.activity_search);
 
@@ -46,6 +49,17 @@ public class SearchActivity extends AppCompatActivity implements FiltersDialogFr
     setSupportActionBar(toolbar);
 
     initViews();
+
+    if (queryParams == null) {
+      queryParams = new NYTSearchQueryParams();
+    } else {
+      loadArticles(0);
+    }
+  }
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    Icepick.saveInstanceState(this, outState);
   }
 
   private void initViews() {
@@ -122,15 +136,17 @@ public class SearchActivity extends AppCompatActivity implements FiltersDialogFr
   }
 
   private void loadArticles(final int page) {
-    if (queryParams.getQuery().length() == 0) {
+    if (queryParams.getQuery() == null || queryParams.getQuery().length() == 0) {
       return;
     }
 
     NYTSearchBuilder.executeAndGetResults(this, queryParams, page, new NYTSearchBuilder.NYTArticleListener() {
       @Override
       public void onLoadArticlesSuccessful(NYTSearchBuilder.SearchResult result) {
-        if (result.articles.size() == 0)
+        if (result.articles.size() == 0) {
           showSnackbarMessage(getString(R.string.no_articles_found));
+          return;
+        }
 
         if (page == 0) {
           adapter.replaceItems(result.articles);

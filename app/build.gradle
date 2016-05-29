@@ -20,6 +20,9 @@ android {
 }
 
 apply plugin: 'com.neenbedankt.android-apt'
+repositories {
+  maven {url "https://clojars.org/repo/"}
+}
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -33,4 +36,6 @@ dependencies {
   compile 'com.jakewharton:butterknife:8.0.1'
   apt 'com.jakewharton:butterknife-compiler:8.0.1'
   compile 'com.github.bumptech.glide:glide:3.5.2'
+  compile 'frankiesardo:icepick:3.2.0'
+  provided 'frankiesardo:icepick-processor:3.2.0'
 }

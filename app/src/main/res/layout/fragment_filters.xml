@@ -168,29 +168,34 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentRight="true">
 
-    <LinearLayout
-      android:layout_alignParentLeft="true"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="horizontal"
-      android:baselineAligned="false">
-
-      <Button
-        android:id="@+id/btnFilterCancel"
-        android:layout_width="fill_parent"
+    <ScrollView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+      <LinearLayout
+        android:layout_alignParentLeft="true"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="@string/cancel"
-        style="@style/TextButton"/>
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
-      <Button
-        android:id="@+id/btnFilterSave"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="@string/ok"
-        style="@style/TextButton" />
-    </LinearLayout>
+        <Button
+          android:id="@+id/btnFilterCancel"
+          android:layout_width="fill_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:text="@string/cancel"
+          style="@style/TextButton"/>
+
+        <Button
+          android:id="@+id/btnFilterSave"
+          android:layout_width="fill_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:text="@string/ok"
+          style="@style/TextButton" />
+      </LinearLayout>
+    </ScrollView>
+
 
   </android.support.v7.widget.Toolbar>
 
